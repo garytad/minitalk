@@ -1,51 +1,45 @@
 #include <signal.h>
+#include <libft/libft.h>
 
-int	ft_atoi(const char *str)
-{
-	int		sign;
-	int		res;
-	int		i;
-
-	i = 0;
-	while ((str[i] == 32) || (str[i] >= 9 && str[i] <= 13))
-		i++;
-	if (str[i] == '-' || str[i] == '+')
-	{
-		if (str[i] == '-')
-			sign = -1;
-		i++;
-	}
-	res = 0;
-	while (str[i] >= '0' && str[i] <= '9')
-	{
-		res = (res * 10) + (str[i] - '0');
-		i++;
-	}
-	if (sign == -1)
-		return (-res);
-	else
-		return (res);
-}
-
-int	send_string_pid(int pid, unsigned char *str)
+int	send_string_pid(int pid, char *str)
 {
 	unsigned char	counter;
+	int				i;
 
-	counter = 128;
-	while (*str)
+	i = 0;
+	while (str[i])
 	{
+		counter = 128;
 		while (counter)
 		{
-			if (counter & *str)
+			if (counter & str[i])
+			{
 				if (kill(pid, SIGUSR1) == -1)
 					return (0);
+			}
 			else
+			{
 				if (kill(pid, SIGUSR2) == -1)
 					return (0);
+			}
 			counter >>= 1;
 		}
-		*str++;
+		i++;
 	}
+	return (1);
+}
+
+int	send_0_pid(int pid)
+{
+	int	i;
+
+	i = 8;
+	while (i-- > 0)
+	{
+		if (kill(pid, SIGUSR2) == -1)
+			return (0);
+	}
+	return (1);
 }
 
 int	main(int argc, char **argv)
@@ -53,6 +47,6 @@ int	main(int argc, char **argv)
 	if (argc != 3)
 		return (0);
 	send_string_pid(ft_atoi(argv[1]), argv[2]);
-	sleep(5);
-
+	send_0_pid(ft_atoi(argv[1]));
+	return (1);
 }
