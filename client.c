@@ -1,5 +1,6 @@
 #include <signal.h>
-#include <libft/libft.h>
+#include "libft/libft.h"
+#include <stdio.h>
 
 int	send_string_pid(int pid, char *str)
 {
@@ -23,6 +24,7 @@ int	send_string_pid(int pid, char *str)
 					return (0);
 			}
 			counter >>= 1;
+			usleep(100);
 		}
 		i++;
 	}
@@ -38,15 +40,25 @@ int	send_0_pid(int pid)
 	{
 		if (kill(pid, SIGUSR2) == -1)
 			return (0);
+		usleep(100);
 	}
 	return (1);
+}
+
+void	sighandler(int sig)
+{
+	if (sig == SIGUSR1)
+		write(1, "Data received at server.\n", 25);
+	exit(0);
 }
 
 int	main(int argc, char **argv)
 {
 	if (argc != 3)
 		return (0);
+	signal(SIGUSR1, sighandler);
 	send_string_pid(ft_atoi(argv[1]), argv[2]);
 	send_0_pid(ft_atoi(argv[1]));
+	sleep(5);
 	return (1);
 }
