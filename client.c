@@ -47,9 +47,19 @@ int	send_0_pid(int pid)
 
 void	sighandler(int sig)
 {
-	if (sig == SIGUSR1)
-		write(1, "Data received at server.\n", 25);
-	exit(0);
+	static int	i;
+
+	if (sig == SIGUSR2)
+	{
+		i++;
+	}
+	else
+	{
+		write(1, "Data Received : ", 16);
+		ft_putnbr_fd(i, 1);
+		write(1, "\n", 1);
+		exit(0);
+	}
 }
 
 int	main(int argc, char **argv)
@@ -57,8 +67,13 @@ int	main(int argc, char **argv)
 	if (argc != 3)
 		return (0);
 	signal(SIGUSR1, sighandler);
+	signal(SIGUSR2, sighandler);
+	write(1, "Data Sent : ", 12);
+	ft_putnbr_fd(ft_strlen(argv[2]), 1);
+	write(1, "\n", 1);
 	send_string_pid(ft_atoi(argv[1]), argv[2]);
 	send_0_pid(ft_atoi(argv[1]));
-	sleep(5);
+	sleep(3);
+	write(1, "Data send failed.\n", 18);
 	return (1);
 }
