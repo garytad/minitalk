@@ -12,10 +12,10 @@ LIBS = -L./libft -lft
 all: $(NAME)
 
 $(CLIENT): client.o $(LIBFT)
-	$(CC) -o $@ $(CFLAGS) $(LIBS) $< 
+	$(CC) -o $@ $< $(CFLAGS) $(LIBS)
 
 $(SERVER): server.o $(LIBFT)
-	$(CC) -o $@ $(CFLAGS) $(LIBS) $<
+	$(CC) -o $@ $< $(CFLAGS) $(LIBS)
 
 %.o : %.c 
 	$(CC) -c $(CFLAGS) $^

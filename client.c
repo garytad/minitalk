@@ -1,6 +1,5 @@
 #include <signal.h>
 #include "libft/libft.h"
-#include <stdio.h>
 
 int	send_string_pid(int pid, char *str)
 {
