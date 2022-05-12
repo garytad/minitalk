@@ -69,8 +69,8 @@ void	sighandler(int sig)
 }
 
 /* *function will use argv[1] as pid and argv[2] as string to send
-   *function will print data sent and received if it receive back a signal
-   *function will print data send failed if it does not receive back a signal */
+   *print data sent and received if it receive back a signal
+   *print data send failed if it does not receive back a signal */
 int	main(int argc, char **argv)
 {
 	if (argc != 3)
