@@ -1,6 +1,9 @@
 #include <signal.h>
 #include "libft/libft.h"
 
+/* *function converts receive signal and converts it into char
+   *SIGUSR1 represents 1 and SIGUSR2 represents 0
+   *function will print char when it receive 8 bits */
 void	print_bits(int sig, siginfo_t *info, void *ucontext)
 {
 	static int	i;
@@ -28,6 +31,7 @@ void	print_bits(int sig, siginfo_t *info, void *ucontext)
 	}
 }
 
+/* function print its PID and wait for signal */
 int	main(void)
 {
 	struct sigaction	sa;
