@@ -1,9 +1,8 @@
-NAME = $(CLIENT) $(SERVER)
+NAME = libft $(CLIENT) $(SERVER)
 CLIENT = client
 SERVER = server
-LIBFT = libft.a
-OBJ = $(SRC:.c=.o)
-SRC = client.c server.c
+SRCS = client.c server.c
+OBJ = $(SRCS:.c=.o)
 
 CC = gcc
 CFLAGS = -Wall -Wextra -Werror
@@ -11,27 +10,24 @@ LIBS = -L./libft -lft
 
 all: $(NAME)
 
-$(CLIENT): client.o $(LIBFT)
+$(CLIENT): client.o
 	$(CC) -o $@ $< $(CFLAGS) $(LIBS)
 
-$(SERVER): server.o $(LIBFT)
+$(SERVER): server.o
 	$(CC) -o $@ $< $(CFLAGS) $(LIBS)
 
-%.o : %.c 
-	$(CC) -c $(CFLAGS) $^
-
-$(LIBFT): 
+libft:
 	make -C libft all
 
 clean:
 	rm -f /libft/libft.a
-	rm -f $(NAME)
+	rm -f $(CLIENT) $(SERVER)
 
 fclean:
 	make -C libft fclean
-	rm -f $(NAME) $(OBJ)
+	rm -f $(CLIENT) $(SERVER) $(OBJ)
 
 re: fclean all
 	make -C libft re
 
-.PHONY: all clean fclean re
+.PHONY: all libft clean fclean re
