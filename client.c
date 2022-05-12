@@ -1,13 +1,16 @@
 #include <signal.h>
 #include "libft/libft.h"
 
+/* *function send a string using SIGUSR1 and SIGUSR2 signal to pid
+   *convert string into bit and send it bit by bit by
+    using SIGUSR1 represents 1 and SIGUSR2 represents 0 */
 int	send_string_pid(int pid, char *str)
 {
 	unsigned char	counter;
 	int				i;
 
-	i = 0;
-	while (str[i])
+	i = -1;
+	while (str[++i])
 	{
 		counter = 128;
 		while (counter)
@@ -25,11 +28,12 @@ int	send_string_pid(int pid, char *str)
 			counter >>= 1;
 			usleep(100);
 		}
-		i++;
 	}
 	return (1);
 }
 
+/* *function send a char 0 by using signal to pid
+   *server will stop printing when receive char 0*/
 int	send_0_pid(int pid)
 {
 	int	i;
@@ -44,6 +48,9 @@ int	send_0_pid(int pid)
 	return (1);
 }
 
+/* *handle SIGUSR2 signal as char printed on server side
+   *handle SIGUSR1 signal as server has finished printed
+   *function will write how many byte printed on server */
 void	sighandler(int sig)
 {
 	static int	i;
@@ -61,6 +68,9 @@ void	sighandler(int sig)
 	}
 }
 
+/* *function will use argv[1] as pid and argv[2] as string to send
+   *function will print data sent and received if it receive back a signal
+   *function will print data send failed if it does not receive back a signal */
 int	main(int argc, char **argv)
 {
 	if (argc != 3)
