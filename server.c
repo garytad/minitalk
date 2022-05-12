@@ -18,6 +18,7 @@ void	print_bits(int sig, siginfo_t *info, void *ucontext)
 		i = 0;
 		if (!c)
 		{
+			write (1, "\n", 1);
 			kill(info->si_pid, SIGUSR1);
 			return ;
 		}
